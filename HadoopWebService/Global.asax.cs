@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HadoopWebService.Overrides;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,6 +17,23 @@ namespace HadoopWebService
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            JsonValueProviderFactory jsonValueProviderFactory = null;
+
+            foreach (var factory in ValueProviderFactories.Factories)
+            {
+                if (factory is JsonValueProviderFactory)
+                {
+                    jsonValueProviderFactory = factory as JsonValueProviderFactory;
+                }
+            }
+
+            //remove the default JsonVAlueProviderFactory
+            if (jsonValueProviderFactory != null) ValueProviderFactories.Factories.Remove(jsonValueProviderFactory);
+
+            //add the custom one
+            ValueProviderFactories.Factories.Add(new CustomJsonValueProviderFactory());
+
         }
     }
 }

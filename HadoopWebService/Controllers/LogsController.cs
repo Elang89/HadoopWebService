@@ -5,8 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 using System.IO;
 using System.Data.Odbc;
+using System.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
 
 
 namespace HadoopWebService.Controllers
@@ -36,7 +38,7 @@ namespace HadoopWebService.Controllers
                 hiveConnection.Close();
                 return response;
             }
-            catch(Exception error)
+            catch(WebException error)
             {
                 response = new ContentResult { Content = "{status: 0, message:" + error.Message.ToString()+ "}" };
                 System.Diagnostics.Debug.WriteLine(error.ToString());
